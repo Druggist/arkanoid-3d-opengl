@@ -23,6 +23,8 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram) {
 	GLuint vertexCount = Models::CubeInternal::vertexCount;
 
 	//compute P V M and vertex count
+	M = glm::rotate(M, 45.0f, glm::vec3(0, 1, 0));
+
 
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("P"), 1, false, glm::value_ptr(P));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"), 1, false, glm::value_ptr(V));
@@ -31,4 +33,5 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram) {
 
 	glBindVertexArray(vao);
 	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+	glBindVertexArray(0);
 }

@@ -26,6 +26,9 @@ Game::~Game() {
 }
 
 void Game::Init() {
+	glClearColor(0, 0, 0, 1); //Czyść ekran na czarno
+	glEnable(GL_DEPTH_TEST);
+
 	Player = new GameObject();
 	shaderProgram = new ShaderProgram("vshader.txt",NULL,"fshader.txt"); //Wczytaj program cieniujący
 
