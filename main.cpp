@@ -40,7 +40,7 @@ float* colors=Models::TeapotInternal::colors;
 //float* normals=Models::TeapotInternal::normals;
 float* normals=Models::TeapotInternal::vertexNormals;
 int vertexCount=Models::TeapotInternal::vertexCount;
-*/
+*/1
 
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
