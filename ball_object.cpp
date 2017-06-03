@@ -7,7 +7,8 @@ BallObject::BallObject(vec3 pos, GLFloat radius, glm::vec3 color, vec3 velocity)
 	: GameObject(pos, vec3(radius * 2), color, velocity), Radius(radius), Stuck(true) {}
 
 vec3 BallObject::Move(GLfloat dt){
-	//todo moving
+	this->Position += this->Velocity * dt;
+	
 	return this->Position;
 }
 
