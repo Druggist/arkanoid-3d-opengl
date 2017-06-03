@@ -1,8 +1,8 @@
 #ifndef SHADERPROGRAM_H
 #define SHADERPROGRAM_H
 
-#include "GL/glew.h"
-#include "stdio.h"
+#include <GL/glew.h>
+#include <stdio.h>
 
 class ShaderProgram {
 private:

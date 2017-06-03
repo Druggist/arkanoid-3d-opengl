@@ -3,23 +3,22 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-
 #include <vector>
+#include <stdio.h>
+#include <string>
+#include <cstring>
+
+#include "lodepng.h"
 
 class Model {
 public:
-	Model(const char * obj, const char * texture);
+	Model(const char * obj, char * texture);
 	~Model();
-
-	
-
-	//float width, height, depth;
 
 	uint vertexCount;
 	std::vector< glm::vec3 > vertices;
 	std::vector< glm::vec2 > texCoords;
 	std::vector< glm::vec3 > normals; 
-	uint vertexCount;
 
 	GLuint texture;
 
@@ -28,5 +27,6 @@ public:
 
 	void Draw();
 	
-}
+};
 
+#endif

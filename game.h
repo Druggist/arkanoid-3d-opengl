@@ -2,7 +2,12 @@
 #define GAME_H
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+
+#include "constants.h"
+#include "shaderprogram.h"
+#include "game_object.h"
 
 using namespace glm;
 
@@ -16,9 +21,9 @@ class Game {
 public:
 	GameState State;
 	GLboolean Keys[1024];
-	GLuint Width, Height;
+	GLuint Width;
 
-	Game(GLuint Width, GLuint Height);
+	Game(GLuint width);
 	~Game();
 	void Init();
 	void ProcessInput(GLfloat dt);
