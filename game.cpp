@@ -4,11 +4,13 @@ GLuint vao;
 GLuint bufVertices; //Uchwyt na bufor VBO przechowujący tablicę współrzędnych wierzchołków
 GLuint bufColors;  //Uchwyt na bufor VBO przechowujący tablicę kolorów
 GLuint bufNormals; //Uchwyt na bufor VBO przechowujący tablickę wektorów normalnych
+GLuint bufTexCoords; //Uchwyt na bufor VBO przechowujący tablicę współrzędnych teksturowania
 
 //Kostka
 float* vertices=Models::CubeInternal::vertices;
 float* colors=Models::CubeInternal::colors;
 float* normals=Models::CubeInternal::normals;
+float* texCoords=Models::CubeInternal::texCoords;
 //float* normals=Models::CubeInternal::vertexNormals;
 int vertexCount=Models::CubeInternal::vertexCount;
 
@@ -38,6 +40,7 @@ void Game::Init() {
 	bufVertices=Renderer::MakeBuffer(vertices, vertexCount, sizeof(float)*4); //VBO ze współrzędnymi wierzchołków
 	bufColors=Renderer::MakeBuffer(colors, vertexCount, sizeof(float)*4);//VBO z kolorami wierzchołków
 	bufNormals=Renderer::MakeBuffer(normals, vertexCount, sizeof(float)*4);//VBO z wektorami normalnymi wierzchołków
+	bufTexCoords=Renderer::MakeBuffer(texCoords, vertexCount, sizeof(float)*2);//VBO ze wspolrzednymi teksturowania
 
 	//Zbuduj VAO wiążący atrybuty z konkretnymi VBO
 	glGenVertexArrays(1,&vao); //Wygeneruj uchwyt na VAO i zapisz go do zmiennej globalnej
@@ -47,6 +50,7 @@ void Game::Init() {
 	Renderer::VBOToAttr(shaderProgram,"vertex",bufVertices,4); //"vertex" odnosi się do deklaracji "in vec4 vertex;" w vertex shaderze
 	Renderer::VBOToAttr(shaderProgram,"color",bufColors,4); //"color" odnosi się do deklaracji "in vec4 color;" w vertex shaderze
 	Renderer::VBOToAttr(shaderProgram,"normal",bufNormals,4); //"normal" odnosi się do deklaracji "in vec4 normal;" w vertex shaderze
+	Renderer::VBOToAttr(shaderProgram,"texCoords",bufTexCoords,2); //"texCoords" odnosi się do deklaracji "in vec2 texCoords;" w vertex shaderze
 
 	glBindVertexArray(0); //Dezaktywuj VAO
 }
@@ -72,5 +76,9 @@ if (this->State == GAME_ACTIVE) {
 }
 
 void Game::Render() {
+	Player->Position = vec3(-1.0f, -1.0f, 5.0f);
+	Player->Size = vec3(0.5f,0.5f,0.5f);
+	Player->Rotation = vec3(45.0f,0.0f,0.0f);
+
 	Player->Draw(vao, shaderProgram);
 }

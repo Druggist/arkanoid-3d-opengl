@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 
 const GLfloat PI = 3.141592653589793f;
-const GLfloat PAD_SPEED = 500.0f;
+const GLfloat PAD_SPEED = 1.0f;
 const GLfloat BALL_SPEED = 100.0f;
 const GLuint LIVES = 3;
 const GLuint SCREEN_WIDTH = 800;

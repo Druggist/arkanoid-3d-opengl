@@ -28,6 +28,7 @@ public:
 	Game(GLuint width);
 	~Game();
 	void Init();
+	GLuint ReadTexture(const char* filename);
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
 	void Render();
