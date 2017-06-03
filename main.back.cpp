@@ -27,12 +27,12 @@ GLuint bufColors;  //Uchwyt na bufor VBO przechowujący tablicę kolorów
 GLuint bufNormals; //Uchwyt na bufor VBO przechowujący tablickę wektorów normalnych
 
 //Kostka
-/*float* vertices=Models::CubeInternal::vertices;
+float* vertices=Models::CubeInternal::vertices;
 float* colors=Models::CubeInternal::colors;
 float* normals=Models::CubeInternal::normals;
 //float* normals=Models::CubeInternal::vertexNormals;
 int vertexCount=Models::CubeInternal::vertexCount;
-*/
+
 /*
 //Czajnik
 float* vertices=Models::TeapotInternal::vertices;

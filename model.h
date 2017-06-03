@@ -1,32 +1,45 @@
+/*
+Niniejszy program jest wolnym oprogramowaniem; możesz go
+rozprowadzać dalej i / lub modyfikować na warunkach Powszechnej
+Licencji Publicznej GNU, wydanej przez Fundację Wolnego
+Oprogramowania - według wersji 2 tej Licencji lub(według twojego
+wyboru) którejś z późniejszych wersji.
+
+Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on
+użyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej
+gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH
+ZASTOSOWAŃ.W celu uzyskania bliższych informacji sięgnij do
+Powszechnej Licencji Publicznej GNU.
+
+Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz
+Powszechnej Licencji Publicznej GNU(GNU General Public License);
+jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
+Place, Fifth Floor, Boston, MA  02110 - 1301  USA
+*/
+
 #ifndef MODEL_H
 #define MODEL_H
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
 #include <vector>
-#include <stdio.h>
-#include <string>
-#include <cstring>
+#include <glm/glm.hpp>
+#include <GLFW/glfw3.h>
+#include "constants.h"
 
-#include "lodepng.h"
+namespace Models {
 
-class Model {
-public:
-	Model(const char * obj, char * texture);
-	~Model();
-
-	uint vertexCount;
-	std::vector< glm::vec3 > vertices;
-	std::vector< glm::vec2 > texCoords;
-	std::vector< glm::vec3 > normals; 
-
-	GLuint texture;
-
-	bool loadOBJ(const char * path, std::vector < glm::vec3 > & out_vertices, std::vector < glm::vec2 > & out_uvs, std::vector < glm::vec3 > & out_normals);
-	GLuint readTexture(char* filename);
-
-	void Draw();
-	
-};
+	class Model {
+		public:
+			int vertexCount;
+			float *vertices;
+			float *normals;
+			float *vertexNormals;
+			float *texCoords;
+			float *colors;
+					
+			virtual void drawSolid()=0;
+			virtual void drawWire();
+	};
+}
 
 #endif

@@ -14,22 +14,48 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
+void error_callback(int error, const char* description) {
+	fputs(description, stderr);
+}
+
 int main(int argc, char const *argv[]) {
-	glfwInit();
+	
+	GLFWwindow* window;
+	
+	glfwSetErrorCallback(error_callback);
+
+	if (!glfwInit()) {
+		fprintf(stderr, "Cannot initialize GLFW.\n");
+		exit(EXIT_FAILURE);
+	}
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid", nullptr, nullptr);
+	window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid", NULL, NULL);
+
+	if (!window) {
+		fprintf(stderr, "Cannot create a window.\n");
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
+
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
+
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Cannot initialize GLEW.\n");
+		exit(EXIT_FAILURE);
+	}
 
 	glfwSetKeyCallback(window, key_callback);
 
-	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	/*glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 	
 	Arkanoid.Init();
 

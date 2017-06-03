@@ -23,17 +23,17 @@ void main(void) {
 
     //Obliczenie wektora do swiatla
     vec4 l=normalize(V*(lp-M*vertex));//Wektor do swiatla w przestrzeni oka
-	//Obliczenie wektora normalnego
+    //Obliczenie wektora normalnego
     vec4 n=normalize(V*M*normal); //Wektor normalny w przestrzeni oka
 
-    //Obliczenie iloczynu skalarnego  wektorów l i n
+    //Obliczenie iloczynu skalarnego  wektorÃ³w l i n
     float nl=max(dot(n,l),0);
 
     //Obliczenie modelu oswietlenia
     iC=ka*la+kd*ld*vec4(nl,nl,nl,1);
 
-	//Obliczenie wspolrzednej wierzcholka w przestrzeni przyciecia
-	gl_Position=P*V*M*vertex;
+    //Obliczenie wspolrzednej wierzcholka w przestrzeni przyciecia
+    gl_Position=P*V*M*vertex;
 }
 
 

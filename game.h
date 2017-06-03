@@ -7,7 +7,9 @@
 
 #include "constants.h"
 #include "shaderprogram.h"
+#include "renderer.h"
 #include "game_object.h"
+#include "cube.h"
 
 using namespace glm;
 

@@ -6,6 +6,29 @@ GameObject::GameObject()
 GameObject::GameObject(vec3 pos, vec3 size, glm::vec3 color, vec3 velocity, vec3 rotation)
 	: Position(pos), Size(size), Color(color), Velocity(velocity), Rotation(rotation), Solid(false), Destroyed(false) {}
 
-void GameObject::Draw() {
-	
+void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram) {
+	shaderProgram->use();
+
+	mat4 P, V, M;
+	P = glm::perspective(50 * PI / 180, 1.0f, 1.0f, 50.0f); //Wylicz macierz rzutowania
+
+	V = glm::lookAt( //Wylicz macierz widoku
+		glm::vec3(0.0f, 0.0f, -3.5f),
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+	//Wylicz macierz modelu rysowanego obiektu
+	M = glm::mat4(1.0f);
+	GLuint vertexCount = Models::CubeInternal::vertexCount;
+
+	//compute P V M and vertex count
+
+	glUniformMatrix4fv(shaderProgram->getUniformLocation("P"), 1, false, glm::value_ptr(P));
+	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"), 1, false, glm::value_ptr(V));
+	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"), 1, false, glm::value_ptr(M));
+    glUniform4f(shaderProgram->getUniformLocation("lp"), 0, 0, -6, 1); 
+
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 }

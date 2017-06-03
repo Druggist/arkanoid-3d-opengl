@@ -17,14 +17,44 @@ jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
 Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 */
 
+#ifndef CUBE_H
+#define CUBE_H
+
+//Cube model made out of triangles
+//Contains arrays:
+//vertices - vertex positions in homogenous coordinates
+//normals - vertex normals in homogenous coordinates
+//texCoords - texturing coordinates
+//colors - vertex colors (rgba)
+//Culling GL_CW
+//TBN friendly
+
 #include "model.h"
 
 namespace Models {
-	void Model::drawWire() {
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-		
-		drawSolid();
-		
-		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-	}
+	namespace CubeInternal {
+		extern float vertices[];
+		extern float normals[];
+		extern float vertexNormals[];
+		extern float texCoords[];
+		extern float colors[];
+		extern float c1[];
+		extern float c2[];
+		extern float c3[];
+		extern unsigned int vertexCount;
+	} 
+	
+	class Cube: public Model {
+		public:
+			Cube();
+			virtual ~Cube();
+			virtual void drawSolid();
+	};
+
+	extern Cube cube;
 }
+
+
+
+
+#endif
