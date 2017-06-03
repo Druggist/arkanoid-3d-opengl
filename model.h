@@ -9,21 +9,24 @@
 class Model {
 public:
 	Model(const char * obj, const char * texture);
+	~Model();
 
-	float width, height, depth;
+	
 
+	//float width, height, depth;
+
+	uint vertexCount;
 	std::vector< glm::vec3 > vertices;
 	std::vector< glm::vec2 > texCoords;
 	std::vector< glm::vec3 > normals; 
+	uint vertexCount;
 
+	GLuint texture;
 
-private:
-	bool loadOBJ(
-	    const char * path,
-	    std::vector < glm::vec3 > & out_vertices,
-	    std::vector < glm::vec2 > & out_uvs,
-	    std::vector < glm::vec3 > & out_normals
-	)
+	bool loadOBJ(const char * path, std::vector < glm::vec3 > & out_vertices, std::vector < glm::vec2 > & out_uvs, std::vector < glm::vec3 > & out_normals);
+	GLuint readTexture(char* filename);
 
+	void Draw();
+	
 }
 
