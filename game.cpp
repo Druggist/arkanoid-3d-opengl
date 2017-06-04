@@ -55,9 +55,9 @@ void Game::Init() {
 	BuffVertices[0]=Renderer::MakeBuffer(brickVerts, brickNumVerts, sizeof(float)*4);
 	BuffTexCoords[0]=Renderer::MakeBuffer(brickTexCoords, brickNumVerts, sizeof(float)*2);
 	BuffNormals[0]=Renderer::MakeBuffer(brickNormals, brickNumVerts, sizeof(float)*4);*/
-	BuffVertices[1]=Renderer::MakeBuffer((void*) &padVerts, padNumVerts, sizeof(float)*4);
-	BuffTexCoords[1]=Renderer::MakeBuffer((void*) &padTexCoords, padNumVerts, sizeof(float)*2);
-	BuffNormals[1]=Renderer::MakeBuffer((void*) &padNormals, padNumVerts, sizeof(float)*4);
+	BuffVertices[1]=Renderer::MakeBuffer((void*) padVerts, padNumVerts, sizeof(float)*3);
+	BuffTexCoords[1]=Renderer::MakeBuffer((void*) padTexCoords, padNumVerts, sizeof(float)*2);
+	BuffNormals[1]=Renderer::MakeBuffer((void*) padNormals, padNumVerts, sizeof(float)*3);
 	/*BuffVertices[2]=Renderer::MakeBuffer(ballVerts, ballNumVerts, sizeof(float)*4);
 	BuffTexCoords[2]=Renderer::MakeBuffer(ballTexCoords, ballNumVerts, sizeof(float)*2);
 	BuffNormals[2]=Renderer::MakeBuffer(ballNormals, ballNumVerts, sizeof(float)*4);
@@ -80,9 +80,9 @@ void Game::Init() {
 
 	glGenVertexArrays(1,&PadVAO); 
 	glBindVertexArray(PadVAO); 
-	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[1],4); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[1],3); 
 	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[1],2); 
-	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[1],4); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[1],3); 
 	glBindVertexArray(0);
 /*
 	glGenVertexArrays(1,&BallVAO); 
@@ -134,8 +134,9 @@ if (this->State == GAME_ACTIVE) {
 }
 
 void Game::Render() {
-	Pad->Size = vec3(0.5f,0.5f,0.5f);
-	Pad->Rotation = vec3(45.0f,0.0f,0.0f);
+	Pad->Size = vec3(1.0f,1.0f,1.0f);
+	Pad->Rotation = vec3(90.0f,0.0f,0.0f);
+	Pad->Position = vec3(0.0f,0.0f,3.0f);
 
 	Pad->Draw(PadVAO, shaderProgram, padNumVerts);
 }

@@ -28,11 +28,11 @@ int main(int argc, char const *argv[]) {
 		fprintf(stderr, "Cannot initialize GLFW.\n");
 		exit(EXIT_FAILURE);
 	}
-
+/*
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 	window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Arkanoid", NULL, NULL);
 
 	if (!window) {
