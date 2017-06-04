@@ -72,77 +72,64 @@ void Game::Init() {
 	Plane = new GameObject(vec3(0.0f,-0.5f,0.0f), Renderer::MeasureObject(planeVerts, planeNumVerts), vec3(0.0f,90.0f,0.0f));
 
 	//CORNERS
-	Corner1 = new GameObject();
-	Corner1->Rotation = vec3(0.0f,180.0f,0.0f);
-	Corner1->Position = vec3(-3.3f,0.0f,-5.0f);
-
-	Corner2 = new GameObject();
-	Corner2->Rotation = vec3(0.0f,90.0f,0.0f);
-	Corner2->Position = vec3(4.0f,0.0f,-4.3f);
-
+	Corner1 = new GameObject(vec3(-3.3f,0.0f,-5.0f), Renderer::MeasureObject(cornerVerts, cornerNumVerts), vec3(0.0f,180.0f,0.0f));
+	Corner1->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Corner2 = new GameObject(vec3(4.0f,0.0f,-4.3f), Renderer::MeasureObject(cornerVerts, cornerNumVerts), vec3(0.0f,90.0f,0.0f));
+	Corner2->Tex = Renderer::ReadTexture("assets/textures/gray.png");
 	//SIDES
-	Side1 = new GameObject();
-	Side1->Rotation = vec3(0.0f,90.0f,0.0f);
-	Side1->Position = vec3(4.0f,0.0f,0.0f);
-
-	Side2 = new GameObject();
-	Side2->Rotation = vec3(0.0f,90.0f,0.0f);
-	Side2->Position = vec3(-4.0f,0.0f,0.0f);
-
-	Side3 = new GameObject();
-	Side3->Scale = vec3(0.8f,1.0f,1.0f);
-	Side3->Position = vec3(0.0f,0.0f,-5.0f);
-
-	Side4 = new GameObject();
-	Side4->Rotation = vec3(0.0f,90.0f,0.0f);
-	Side4->Position = vec3(4.0f,0.0f,5.0f);
-
-	Side5 = new GameObject();
-	Side5->Rotation = vec3(0.0f,90.0f,0.0f);
-	Side5->Position = vec3(-4.0f,0.0f,5.0f);
+	Side1 = new GameObject(vec3(4.0f,0.0f,0.0f), Renderer::MeasureObject(sideVerts, sideNumVerts), vec3(0.0f,90.0f,0.0f));
+	Side1->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Side2 = new GameObject(vec3(-4.0f,0.0f,0.0f), Renderer::MeasureObject(sideVerts, sideNumVerts), vec3(0.0f,90.0f,0.0f));
+	Side2->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Side3 = new GameObject(vec3(0.0f,0.0f,-5.0f), Renderer::MeasureObject(sideVerts, sideNumVerts), vec3(0.0f,00.0f,0.0f), vec3(0.8f,1.0f,1.0f));
+	Side3->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Side4 = new GameObject(vec3(4.0f,0.0f,5.0f), Renderer::MeasureObject(sideVerts, sideNumVerts), vec3(0.0f,90.0f,0.0f));
+	Side4->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Side5 = new GameObject(vec3(-4.0f,0.0f,5.0f), Renderer::MeasureObject(sideVerts, sideNumVerts), vec3(0.0f,90.0f,0.0f));
+	Side5->Tex = Renderer::ReadTexture("assets/textures/gray.png");
 
 
-	Side1->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Side2->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Side3->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Side4->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Side5->Tex = Renderer::ReadTexture("assets/textures/checker.png");
+	Addon1 = new GameObject(vec3(2.0f,0.0f,-5.0f), Renderer::MeasureObject(addonVerts, addonNumVerts));
+	Addon1->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Addon2 = new GameObject(vec3(-2.0f,0.0f,-5.0f), Renderer::MeasureObject(addonVerts, addonNumVerts));
+	Addon2->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	
 
-	Addon1 = new GameObject();
-	Addon1->Position = vec3(2.0f,0.0f,-5.0f);
-	Addon2 = new GameObject();
-	Addon2->Position = vec3(-2.0f,0.0f,-5.0f);
+	Addon3 = new GameObject(vec3(-4.0f,0.0f,-2.0f), Renderer::MeasureObject(addonVerts, addonNumVerts), vec3(0.0f,90.0f,0.0f));
+	Addon3->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Addon4 = new GameObject(vec3(4.0f,0.0f,-2.0f), Renderer::MeasureObject(addonVerts, addonNumVerts), vec3(0.0f,90.0f,0.0f));
+	Addon4->Tex = Renderer::ReadTexture("assets/textures/gray.png");
 
 
-	Addon3 = new GameObject();
-	Addon3->Rotation = vec3(0.0f,90.0f,0.0f);
-	Addon3->Position = vec3(-4.0f,0.0f,-2.0f);
-	Addon4 = new GameObject();
-	Addon4->Rotation = vec3(0.0f,90.0f,0.0f);
-	Addon4->Position = vec3(4.0f,0.0f,-2.0f);
+	Addon5 = new GameObject(vec3(-4.0f,0.0f,1.0f), Renderer::MeasureObject(addonVerts, addonNumVerts), vec3(0.0f,90.0f,0.0f));
+	Addon5->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Addon6 = new GameObject(vec3(4.0f,0.0f,1.0f), Renderer::MeasureObject(addonVerts, addonNumVerts), vec3(0.0f,90.0f,0.0f));
+	Addon6->Tex = Renderer::ReadTexture("assets/textures/gray.png");
 
-	Addon5 = new GameObject();
-	Addon5->Rotation = vec3(0.0f,90.0f,0.0f);
-	Addon5->Position = vec3(-4.0f,0.0f,1.0f);
-	Addon6 = new GameObject();
-	Addon6->Rotation = vec3(0.0f,90.0f,2.0f);
-	Addon6->Position = vec3(4.0f,0.0f,1.0f);
-
-	Addon7 = new GameObject();
-	Addon7->Rotation = vec3(0.0f,90.0f,0.0f);
-	Addon7->Position = vec3(-4.0f,0.0f,4.0f);
-	Addon8 = new GameObject();
-	Addon8->Rotation = vec3(0.0f,90.0f,0.0f);
-	Addon8->Position = vec3(4.0f,0.0f,4.0f);
+	Addon7 = new GameObject(vec3(-4.0f,0.0f,4.0f), Renderer::MeasureObject(addonVerts, addonNumVerts), vec3(0.0f,90.0f,0.0f));
+	Addon7->Tex = Renderer::ReadTexture("assets/textures/gray.png");
+	Addon8 = new GameObject(vec3(4.0f,0.0f,4.0f), Renderer::MeasureObject(addonVerts, addonNumVerts), vec3(0.0f,90.0f,0.0f));
+	Addon8->Tex = Renderer::ReadTexture("assets/textures/gray.png");
 
 	//GameObjects
 	for(int j = 0; j < 6; j++) {
+
 		for(int i = 0; i < 10; i++) {
 			Bricks.push_back(new GameObject());
 			Bricks[i+j*10]->Rotation = vec3(0.0f,90.0f,0.0f);
 			Bricks[i+j*10]->Position = vec3(-3.15f+0.7f*i,0.0f,-0.5f-0.5f*j);
-			if(j%2==0) 
-				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/checker.png");		
+			if(j==0) 
+				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/green.png");
+			if(j==1) 
+				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/pink.png");
+			if(j==2) 
+				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/blue.png");
+			if(j==3) 
+				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/yellow.png");
+			if(j==4) 
+				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/red.png");
+			if(j==5) 
+				Bricks[i+j*10]->Tex = Renderer::ReadTexture("assets/textures/gray.png");			
 		}
 	}
 
