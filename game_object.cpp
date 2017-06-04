@@ -28,7 +28,7 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 
 	//compute P V M and vertex count
 	M = glm::scale(M, Size);
-	M = glm::translate(M, Position);
+	V = glm::translate(V, Position);
 	M = glm::rotate(M,Rotation.x*PI/180.0f,glm::vec3(1.0f,0.0f,0.0f));
 	M = glm::rotate(M,Rotation.y*PI/180.0f,glm::vec3(0.0f,1.0f,0.0f));
 	M = glm::rotate(M,Rotation.z*PI/180.0f,glm::vec3(0.0f,0.0f,1.0f));
