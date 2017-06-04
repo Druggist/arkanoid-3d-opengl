@@ -64,10 +64,7 @@ void Game::Init() {
 	shaderProgram = new ShaderProgram("vshader.txt",NULL,"fshader.txt");
 
 	//create scene
-	Ball = new BallObject();
-	Ball->Size = vec3(1.5f,1.5f,1.5f);
-	Ball->Position = vec3(0.0f,1.0f,5.5f);
-	Ball->Velocity = BALL_VELOCITY;
+	Ball = new BallObject(vec3(0.0f,0.0f,5.0f), Renderer::MeasureObject(ballVerts, ballNumVerts).x / 2, vec3(1.5f,1.5f,1.5f), BALL_VELOCITY);
 
 	Plane = new GameObject(vec3(0.0f,-0.5f,0.0f), Renderer::MeasureObject(planeVerts, planeNumVerts), vec3(0.0f,90.0f,0.0f));
 
@@ -243,12 +240,16 @@ if (this->State == GAME_ACTIVE) {
 		GLfloat velocity = PAD_SPEED * dt;
 
 		if (this->Keys[GLFW_KEY_A] || this->Keys[GLFW_KEY_LEFT]) {
-			if (Pad->Position.x >= -3.0f)
+			if (Pad->Position.x >= -3.0f){
 				Pad->Position.x -= velocity;
+				if(Ball->Stuck) Ball->Position.x -= velocity;
+			}
 		}
 		if (this->Keys[GLFW_KEY_D] || this->Keys[GLFW_KEY_RIGHT]) {
-			if (Pad->Position.x <= 3.0f)
+			if (Pad->Position.x <= 3.0f){
 				Pad->Position.x += velocity;
+				if(Ball->Stuck) Ball->Position.x += velocity;
+			}
 		}
 		if (this->Keys[GLFW_KEY_W] || this->Keys[GLFW_KEY_UP] || this->Keys[GLFW_KEY_SPACE]) {
 			Ball->Stuck = GL_FALSE;
@@ -291,8 +292,13 @@ void Game::Render() {
 }
 
 void Game::Collisions() {
+	if(CheckCollision(*Ball, *Side1) || CheckCollision(*Ball, *Side2) || CheckCollision(*Ball, *Side4) || CheckCollision(*Ball, *Side5)){
+		Ball->Velocity.x *= -1;
+	}
 
-
+	if(CheckCollision(*Ball, *Side3)){
+		Ball->Velocity.z *= -1;
+	}
 
 	for (auto &box : Bricks) {
 		if (!box->Destroyed) if (CheckCollision(*Ball, *box)) if (!box->Solid) box->Destroyed = GL_TRUE;

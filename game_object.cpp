@@ -3,8 +3,8 @@
 GameObject::GameObject()
 	: Position(vec3(0.0f)), Size(vec3(1.0f)), Scale(vec3(1.0f)), Velocity(vec3(0.0f)), Rotation(vec3(0.0f)), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker.png")) {}
 
-GameObject::GameObject(vec3 pos, vec3 size, vec3 rot, vec3 scale)
-	: Position(pos), Size(size*scale), Scale(scale), Velocity(vec3(0.0f)), Rotation(rot), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker.png")) {}
+GameObject::GameObject(vec3 pos, vec3 size, vec3 rot, vec3 scale, vec3 velocity)
+	: Position(pos), Size(size*scale), Scale(scale), Velocity(velocity), Rotation(rot), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker.png")) {}
 
 
 void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount) {
