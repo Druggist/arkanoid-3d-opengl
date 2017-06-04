@@ -5,8 +5,8 @@
 // This is a .h file for the model: corner
 
 // Positions: 160
-// Texels: 324
-// Normals: 104
+// Texels: 257
+// Normals: 107
 // Faces: 316
 // Vertices: 948
 

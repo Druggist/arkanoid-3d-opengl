@@ -5,7 +5,7 @@
 // This is a .h file for the model: side
 
 // Positions: 64
-// Texels: 136
+// Texels: 128
 // Normals: 36
 // Faces: 124
 // Vertices: 372

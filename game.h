@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 
+#include <vector>
+
 #include "constants.h"
 #include "shaderprogram.h"
 #include "renderer.h"
@@ -13,6 +15,7 @@
 #include "allmodels.h"
 
 using namespace glm;
+using namespace std;
 
 enum GameState {
 	GAME_ACTIVE,
