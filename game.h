@@ -4,7 +4,6 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
-
 #include <vector>
 
 #include "constants.h"
@@ -27,15 +26,18 @@ class Game {
 public:
 	GameState State;
 	GLboolean Keys[1024];
-	GLuint Width;
 
-	Game(GLuint width);
+	Game();
 	~Game();
 	void Init();
 	GLuint ReadTexture(const char* filename);
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
 	void Render();
+	void Collisions();
+
+private:
+	GLboolean CheckCollision(GameObject &one, GameObject &two);
 };
 
 #endif

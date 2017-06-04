@@ -17,11 +17,10 @@ public:
 	vec3 Position, Size, Velocity, Scale, Rotation;
 	GLboolean Destroyed;
 	GLboolean Solid;
-	//model
 	GLuint Tex;
 
 	GameObject();
-	GameObject(vec3 pos, vec3 size, glm::vec3 scale = glm::vec3(1.0f), vec3 velocity = vec3(0.0f), vec3 rotation = vec3(0.0f), const char* filename = "assets/textures/checker2.png"); 
+	GameObject(vec3 pos, vec3 size, vec3 scale = vec3(1.0f), vec3 velocity = vec3(0.0f), vec3 rotation = vec3(0.0f), const char* texture = "assets/textures/checker.png"); 
 	
 	virtual void Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount);
 };

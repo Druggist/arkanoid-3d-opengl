@@ -14,8 +14,7 @@ vector<GameObject*> Bricks;
 BallObject *Ball;
 ShaderProgram *shaderProgram;
 
-Game::Game(GLuint width) 
-	: State(GAME_ACTIVE), Keys(), Width(width) { 
+Game::Game() { 
 
 }
 
@@ -66,6 +65,9 @@ void Game::Init() {
 
 	//create scene
 	Ball = new BallObject();
+	Ball->Size = vec3(1.5f,1.5f,1.5f);
+	Ball->Position = vec3(0.0f,1.0f,5.5f);
+	Ball->Velocity = BALL_VELOCITY;
 
 	Plane = new GameObject();
 	Plane->Rotation = vec3(0.0f,90.0f,0.0f);
@@ -247,20 +249,24 @@ void Game::Init() {
 }
 
 void Game::Update(GLfloat dt) {
-
+	Ball->Move(dt);
+	Collisions();
 }
 
 void Game::ProcessInput(GLfloat dt) {
 if (this->State == GAME_ACTIVE) {
 		GLfloat velocity = PAD_SPEED * dt;
 
-		if (this->Keys[GLFW_KEY_A]) {
-			if (Pad->Position.x >= 0)
+		if (this->Keys[GLFW_KEY_A] || this->Keys[GLFW_KEY_LEFT]) {
+			if (Pad->Position.x >= -3.0f)
 				Pad->Position.x -= velocity;
 		}
-		if (this->Keys[GLFW_KEY_D]) {
-			if (Pad->Position.x <= this->Width - Pad->Size.x)
+		if (this->Keys[GLFW_KEY_D] || this->Keys[GLFW_KEY_RIGHT]) {
+			if (Pad->Position.x <= 3.0f)
 				Pad->Position.x += velocity;
+		}
+		if (this->Keys[GLFW_KEY_W] || this->Keys[GLFW_KEY_UP] || this->Keys[GLFW_KEY_SPACE]) {
+			Ball->Stuck = GL_FALSE;
 		}
 	}
 }
@@ -273,7 +279,7 @@ void Game::Render() {
 	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts);
 
 	Side1->Draw(SideVAO, shaderProgram, sideNumVerts);
-	Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
+	//Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side3->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side4->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side5->Draw(SideVAO, shaderProgram, sideNumVerts);
@@ -288,16 +294,32 @@ void Game::Render() {
 	Addon8->Draw(AddonVAO, shaderProgram, addonNumVerts);
 
 	for(int i = 0; i < Bricks.size(); i++ ){
-		if(Bricks[i]->Destroyed == false)
-			Bricks[i]->Draw(BrickVAO, shaderProgram, brickNumVerts);
-	
+		if(Bricks[i]->Destroyed == false) Bricks[i]->Draw(BrickVAO, shaderProgram, brickNumVerts);
 	}
-	Life1->Draw(PadVAO, shaderProgram, padNumVerts);
-	Life2->Draw(PadVAO, shaderProgram, padNumVerts);
-	Life3->Draw(PadVAO, shaderProgram, padNumVerts);
 
+	if(!Life1->Destroyed) Life1->Draw(PadVAO, shaderProgram, padNumVerts);
+	if(!Life2->Destroyed) Life2->Draw(PadVAO, shaderProgram, padNumVerts);
+	if(!Life3->Destroyed) Life3->Draw(PadVAO, shaderProgram, padNumVerts);
 
 	Pad->Draw(PadVAO, shaderProgram, padNumVerts);
-
-
+	Ball->Draw(BallVAO, shaderProgram, ballNumVerts);
 }
+
+void Game::Collisions() {
+
+
+
+	for (auto &box : Bricks) {
+		if (!box->Destroyed) if (CheckCollision(*Ball, *box)) if (!box->Solid) box->Destroyed = GL_TRUE;
+	}
+}
+
+GLboolean Game::CheckCollision(GameObject &one, GameObject &two) {
+	bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
+		two.Position.x + two.Size.x >= one.Position.x;
+
+	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
+		two.Position.y + two.Size.y >= one.Position.y;
+
+	return collisionX && collisionY;
+}  
