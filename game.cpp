@@ -51,14 +51,14 @@ void Game::Init() {
 	Corner = new GameObject();
 	Addon = new GameObject();
 
-
+/*
 	BuffVertices[0]=Renderer::MakeBuffer(brickVerts, brickNumVerts, sizeof(float)*4);
 	BuffTexCoords[0]=Renderer::MakeBuffer(brickTexCoords, brickNumVerts, sizeof(float)*2);
-	BuffNormals[0]=Renderer::MakeBuffer(brickNormals, brickNumVerts, sizeof(float)*4);
-	BuffVertices[1]=Renderer::MakeBuffer(padVerts, padNumVerts, sizeof(float)*4);
-	BuffTexCoords[1]=Renderer::MakeBuffer(padTexCoords, padNumVerts, sizeof(float)*2);
-	BuffNormals[1]=Renderer::MakeBuffer(padNormals, padNumVerts, sizeof(float)*4);
-	BuffVertices[2]=Renderer::MakeBuffer(ballVerts, ballNumVerts, sizeof(float)*4);
+	BuffNormals[0]=Renderer::MakeBuffer(brickNormals, brickNumVerts, sizeof(float)*4);*/
+	BuffVertices[1]=Renderer::MakeBuffer((void*) &padVerts, padNumVerts, sizeof(float)*4);
+	BuffTexCoords[1]=Renderer::MakeBuffer((void*) &padTexCoords, padNumVerts, sizeof(float)*2);
+	BuffNormals[1]=Renderer::MakeBuffer((void*) &padNormals, padNumVerts, sizeof(float)*4);
+	/*BuffVertices[2]=Renderer::MakeBuffer(ballVerts, ballNumVerts, sizeof(float)*4);
 	BuffTexCoords[2]=Renderer::MakeBuffer(ballTexCoords, ballNumVerts, sizeof(float)*2);
 	BuffNormals[2]=Renderer::MakeBuffer(ballNormals, ballNumVerts, sizeof(float)*4);
 	BuffVertices[3]=Renderer::MakeBuffer(sideVerts, sideNumVerts, sizeof(float)*4);
@@ -69,14 +69,14 @@ void Game::Init() {
 	BuffNormals[4]=Renderer::MakeBuffer(cornerNormals, cornerNumVerts, sizeof(float)*4);
 	BuffVertices[5]=Renderer::MakeBuffer(addonVerts, addonNumVerts, sizeof(float)*4);
 	BuffTexCoords[5]=Renderer::MakeBuffer(addonTexCoords, addonNumVerts, sizeof(float)*2);
-	BuffNormals[5]=Renderer::MakeBuffer(addonNormals, addonNumVerts, sizeof(float)*4);
-
+	BuffNormals[5]=Renderer::MakeBuffer(addonNormals, addonNumVerts, sizeof(float)*4);*/
+/*
 	glGenVertexArrays(1,&BrickVAO); 
 	glBindVertexArray(BrickVAO); 
 	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[0],4); 
 	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[0],2); 
 	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[0],4); 
-	glBindVertexArray(0);
+	glBindVertexArray(0);*/
 
 	glGenVertexArrays(1,&PadVAO); 
 	glBindVertexArray(PadVAO); 
@@ -84,7 +84,7 @@ void Game::Init() {
 	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[1],2); 
 	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[1],4); 
 	glBindVertexArray(0);
-
+/*
 	glGenVertexArrays(1,&BallVAO); 
 	glBindVertexArray(BallVAO); 
 	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[2],4); 
@@ -111,7 +111,7 @@ void Game::Init() {
 	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[5],4); 
 	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[5],2); 
 	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[5],4); 
-	glBindVertexArray(0);
+	glBindVertexArray(0);*/
 }
 
 void Game::Update(GLfloat dt) {
@@ -126,8 +126,7 @@ if (this->State == GAME_ACTIVE) {
 			if (Pad->Position.x >= 0)
 				Pad->Position.x -= velocity;
 		}
-		if (this->Keys[GLFW_KEY_D])
-		{
+		if (this->Keys[GLFW_KEY_D]) {
 			if (Pad->Position.x <= this->Width - Pad->Size.x)
 				Pad->Position.x += velocity;
 		}
