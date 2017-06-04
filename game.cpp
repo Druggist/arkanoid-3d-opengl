@@ -69,9 +69,7 @@ void Game::Init() {
 	Ball->Position = vec3(0.0f,1.0f,5.5f);
 	Ball->Velocity = BALL_VELOCITY;
 
-	Plane = new GameObject();
-	Plane->Rotation = vec3(0.0f,90.0f,0.0f);
-	Plane->Position = vec3(0.0f,-0.5f,0.0f);
+	Plane = new GameObject(vec3(0.0f,-0.5f,0.0f), Renderer::MeasureObject(planeVerts, planeNumVerts), vec3(0.0f,90.0f,0.0f));
 
 	//CORNERS
 	Corner1 = new GameObject();
@@ -279,7 +277,7 @@ void Game::Render() {
 	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts);
 
 	Side1->Draw(SideVAO, shaderProgram, sideNumVerts);
-	//Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
+	Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side3->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side4->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side5->Draw(SideVAO, shaderProgram, sideNumVerts);
