@@ -5,8 +5,8 @@
 // This is a .h file for the model: pad
 
 // Positions: 320
-// Texels: 536
-// Normals: 106
+// Texels: 483
+// Normals: 107
 // Faces: 636
 // Vertices: 1908
 

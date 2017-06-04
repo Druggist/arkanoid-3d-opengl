@@ -66,6 +66,8 @@ void Game::Init() {
 	//create scene
 	Ball = new BallObject(vec3(0.0f,0.0f,5.0f), Renderer::MeasureObject(ballVerts, ballNumVerts).x / 2, vec3(1.5f,1.5f,1.5f), BALL_VELOCITY);
 
+
+	Ball->Tex = Renderer::ReadTexture("assets/textures/white.png");
 	Plane = new GameObject(vec3(0.0f,-0.5f,0.0f), Renderer::MeasureObject(planeVerts, planeNumVerts), vec3(0.0f,90.0f,0.0f));
 	Plane->Tex = Renderer::ReadTexture("assets/textures/plane.png");
 	//CORNERS
