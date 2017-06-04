@@ -167,7 +167,7 @@ void Game::Init() {
 	Pad->Size = vec3(1.5f,1.5f,1.5f);
 	Pad->Tex = Renderer::ReadTexture("assets/textures/checker.png");
 	Pad->Rotation = vec3(0.0f,90.0f,0.0f);
-	Pad->Position = vec3(0.0f,0.0f,4.0f);
+	Pad->Position = vec3(0.0f,0.0f,5.5f);
 
 	//scene end
 
@@ -204,7 +204,7 @@ void Game::Init() {
 	glBindVertexArray(PadVAO); 
 	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[1],3); 
 	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[1],2); 
-	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[1],3); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[1],3);
 	glBindVertexArray(0);
 
 	glGenVertexArrays(1,&BallVAO); 
@@ -292,6 +292,7 @@ void Game::Render() {
 	Life1->Draw(PadVAO, shaderProgram, padNumVerts);
 	Life2->Draw(PadVAO, shaderProgram, padNumVerts);
 	Life3->Draw(PadVAO, shaderProgram, padNumVerts);
+
 
 	Pad->Draw(PadVAO, shaderProgram, padNumVerts);
 
