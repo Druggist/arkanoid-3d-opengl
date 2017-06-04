@@ -315,11 +315,11 @@ void Game::Collisions() {
 }
 
 GLboolean Game::CheckCollision(GameObject &one, GameObject &two) {
-	bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
-		two.Position.x + two.Size.x >= one.Position.x;
+	bool collisionX = one.Position.x + one.Size.x / 2 >= two.Position.x - two.Size.x / 2 &&
+		two.Position.x + two.Size.x / 2 >= one.Position.x - one.Size.x / 2;
 
-	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
-		two.Position.y + two.Size.y >= one.Position.y;
+	bool collisionZ = one.Position.z + one.Size.y / 2 >= two.Position.z - two.Size.z / 2 &&
+		two.Position.z + two.Size.z / 2 >= one.Position.z - one.Size.z / 2;
 
-	return collisionX && collisionY;
+	return collisionX && collisionZ;
 }  
