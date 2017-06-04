@@ -70,7 +70,7 @@ void Game::Init() {
 	Ball->Velocity = BALL_VELOCITY;
 
 	Plane = new GameObject(vec3(0.0f,-0.5f,0.0f), Renderer::MeasureObject(planeVerts, planeNumVerts), vec3(0.0f,90.0f,0.0f));
-
+	Plane->Tex = Renderer::ReadTexture("assets/textures/plane.png");
 	//CORNERS
 	Corner1 = new GameObject(vec3(-3.3f,0.0f,-5.0f), Renderer::MeasureObject(cornerVerts, cornerNumVerts), vec3(0.0f,180.0f,0.0f));
 	Corner1->Tex = Renderer::ReadTexture("assets/textures/gray.png");
@@ -133,31 +133,15 @@ void Game::Init() {
 		}
 	}
 
-	Life1 = new GameObject();
-	Life1->Scale = vec3(1.0f,1.0f,1.0f);
-	Life1->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Life1->Rotation = vec3(0.0f,90.0f,0.0f);
-	Life1->Position = vec3(-1.0f,0.0f,6.5f);
-	
-	Life2 = new GameObject();
-	Life2->Scale = vec3(1.0f,1.0f,1.0f);
-	Life2->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Life2->Rotation = vec3(0.0f,90.0f,0.0f);
-	Life2->Position = vec3(-2.0f,0.0f,6.5f);
+	Life1 = new GameObject(vec3(-1.0f,0.0f,6.5f), Renderer::MeasureObject(padVerts, padNumVerts), vec3(0.0f,90.0f,0.0f), vec3(1.0f,1.0f,1.0f));
+	Life1->Tex = Renderer::ReadTexture("assets/textures/pad.png");
+	Life2 = new GameObject(vec3(-2.0f,0.0f,6.5f), Renderer::MeasureObject(padVerts, padNumVerts), vec3(0.0f,90.0f,0.0f), vec3(1.0f,1.0f,1.0f));
+	Life2->Tex = Renderer::ReadTexture("assets/textures/pad.png");
+	Life3 = new GameObject(vec3(-3.0f,0.0f,6.5f), Renderer::MeasureObject(padVerts, padNumVerts), vec3(0.0f,90.0f,0.0f), vec3(1.0f,1.0f,1.0f));
+	Life3->Tex = Renderer::ReadTexture("assets/textures/pad.png");
 
-	Life3 = new GameObject();
-	Life3->Scale = vec3(1.0f,1.0f,1.0f);
-	Life3->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Life3->Rotation = vec3(0.0f,90.0f,0.0f);
-	Life3->Position = vec3(-3.0f,0.0f,6.5f);
-
-
-	Pad = new GameObject();
-	Pad->Scale = vec3(1.5f,1.5f,1.5f);
-	Pad->Tex = Renderer::ReadTexture("assets/textures/checker.png");
-	Pad->Rotation = vec3(0.0f,90.0f,0.0f);
-	Pad->Position = vec3(0.0f,0.0f,5.5f);
-	Pad->Size = Renderer::MeasureObject(padVerts, padNumVerts) * Pad->Scale;
+	Pad = new GameObject(vec3(0.0f,0.0f,5.5f), Renderer::MeasureObject(padVerts, padNumVerts), vec3(0.0f,90.0f,0.0f), vec3(1.5f,1.5f,1.5f));
+	Pad->Tex = Renderer::ReadTexture("assets/textures/pad.png");
 
 	//scene end
 
