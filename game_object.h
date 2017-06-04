@@ -8,7 +8,6 @@
 
 #include "shaderprogram.h"
 #include "constants.h"
-#include "cube.h"
 #include "lodepng.h"
 
 using namespace glm;
@@ -22,10 +21,10 @@ public:
 	GLuint Tex;
 
 	GameObject();
-	GameObject(vec3 pos, vec3 size, glm::vec3 color = glm::vec3(1.0f), vec3 velocity = vec3(0.0f), vec3 rotation = vec3(0.0f), const char* filename = "assets/checker2.png"); 
+	GameObject(vec3 pos, vec3 size, glm::vec3 color = glm::vec3(1.0f), vec3 velocity = vec3(0.0f), vec3 rotation = vec3(0.0f), const char* filename = "assets/textures/checker2.png"); 
 	
 	GLuint ReadTexture(const char* filename);
-	virtual void Draw(GLuint &vao, ShaderProgram *shaderProgram);
+	virtual void Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount);
 };
 
 #endif

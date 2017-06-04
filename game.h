@@ -9,7 +9,8 @@
 #include "shaderprogram.h"
 #include "renderer.h"
 #include "game_object.h"
-#include "cube.h"
+#include "ball_object.h"
+#include "allmodels.h"
 
 using namespace glm;
 

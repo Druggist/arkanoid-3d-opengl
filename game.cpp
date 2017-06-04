@@ -1,20 +1,12 @@
 #include "game.h"
 
-GLuint vao;
-GLuint bufVertices; //Uchwyt na bufor VBO przechowujący tablicę współrzędnych wierzchołków
-GLuint bufColors;  //Uchwyt na bufor VBO przechowujący tablicę kolorów
-GLuint bufNormals; //Uchwyt na bufor VBO przechowujący tablickę wektorów normalnych
-GLuint bufTexCoords; //Uchwyt na bufor VBO przechowujący tablicę współrzędnych teksturowania
+GLuint BrickVAO, PadVAO, BallVAO, SideVAO, CornerVAO, AddonVAO;
+GLuint BuffVertices[6];
+GLuint BuffTexCoords[6];
+GLuint BuffNormals[6];
 
-//Kostka
-float* vertices=Models::CubeInternal::vertices;
-float* colors=Models::CubeInternal::colors;
-float* normals=Models::CubeInternal::normals;
-float* texCoords=Models::CubeInternal::texCoords;
-//float* normals=Models::CubeInternal::vertexNormals;
-int vertexCount=Models::CubeInternal::vertexCount;
-
-GameObject *Player;
+GameObject *Brick, *Pad, *Side, *Corner, *Addon;
+BallObject *Ball;
 ShaderProgram *shaderProgram;
 
 Game::Game(GLuint width) 
@@ -23,36 +15,103 @@ Game::Game(GLuint width)
 }
 
 Game::~Game() {
-	delete Player;
+	delete Brick;
+	delete Pad;
+	delete Ball;
+	delete Side;
+	delete Corner;
+	delete Addon;
 	delete shaderProgram;
+
+	glDeleteVertexArrays(1,&BrickVAO);
+	glDeleteVertexArrays(1,&PadVAO);
+	glDeleteVertexArrays(1,&BallVAO);
+	glDeleteVertexArrays(1,&SideVAO);
+	glDeleteVertexArrays(1,&CornerVAO);
+	glDeleteVertexArrays(1,&AddonVAO);
+
+	for(int i = 0; i < 6; i++) {
+		glDeleteBuffers(1,&BuffVertices[i]);
+		glDeleteBuffers(1,&BuffTexCoords[i]);
+		glDeleteBuffers(1,&BuffNormals[i]);
+	}
 }
 
 void Game::Init() {
-	glClearColor(0, 0, 0, 1); //Czyść ekran na czarno
+	glClearColor(0, 0, 0, 1);
 	glEnable(GL_DEPTH_TEST);
 
-	Player = new GameObject();
-	shaderProgram = new ShaderProgram("vshader.txt",NULL,"fshader.txt"); //Wczytaj program cieniujący
+	shaderProgram = new ShaderProgram("vshader.txt",NULL,"fshader.txt");
+
+	//create scene
+	Brick = new GameObject();
+	Pad = new GameObject();
+	Ball = new BallObject();
+	Side = new GameObject();
+	Corner = new GameObject();
+	Addon = new GameObject();
 
 
-	//*****Przygotowanie do rysowania pojedynczego obiektu*******
-	//Zbuduj VBO z danymi obiektu do narysowania
-	bufVertices=Renderer::MakeBuffer(vertices, vertexCount, sizeof(float)*4); //VBO ze współrzędnymi wierzchołków
-	bufColors=Renderer::MakeBuffer(colors, vertexCount, sizeof(float)*4);//VBO z kolorami wierzchołków
-	bufNormals=Renderer::MakeBuffer(normals, vertexCount, sizeof(float)*4);//VBO z wektorami normalnymi wierzchołków
-	bufTexCoords=Renderer::MakeBuffer(texCoords, vertexCount, sizeof(float)*2);//VBO ze wspolrzednymi teksturowania
+	BuffVertices[0]=Renderer::MakeBuffer(brickVerts, brickNumVerts, sizeof(float)*4);
+	BuffTexCoords[0]=Renderer::MakeBuffer(brickTexCoords, brickNumVerts, sizeof(float)*2);
+	BuffNormals[0]=Renderer::MakeBuffer(brickNormals, brickNumVerts, sizeof(float)*4);
+	BuffVertices[1]=Renderer::MakeBuffer(padVerts, padNumVerts, sizeof(float)*4);
+	BuffTexCoords[1]=Renderer::MakeBuffer(padTexCoords, padNumVerts, sizeof(float)*2);
+	BuffNormals[1]=Renderer::MakeBuffer(padNormals, padNumVerts, sizeof(float)*4);
+	BuffVertices[2]=Renderer::MakeBuffer(ballVerts, ballNumVerts, sizeof(float)*4);
+	BuffTexCoords[2]=Renderer::MakeBuffer(ballTexCoords, ballNumVerts, sizeof(float)*2);
+	BuffNormals[2]=Renderer::MakeBuffer(ballNormals, ballNumVerts, sizeof(float)*4);
+	BuffVertices[3]=Renderer::MakeBuffer(sideVerts, sideNumVerts, sizeof(float)*4);
+	BuffTexCoords[3]=Renderer::MakeBuffer(sideTexCoords, sideNumVerts, sizeof(float)*2);
+	BuffNormals[3]=Renderer::MakeBuffer(sideNormals, sideNumVerts, sizeof(float)*4);
+	BuffVertices[4]=Renderer::MakeBuffer(cornerVerts, cornerNumVerts, sizeof(float)*4);
+	BuffTexCoords[4]=Renderer::MakeBuffer(cornerTexCoords, cornerNumVerts, sizeof(float)*2);
+	BuffNormals[4]=Renderer::MakeBuffer(cornerNormals, cornerNumVerts, sizeof(float)*4);
+	BuffVertices[5]=Renderer::MakeBuffer(addonVerts, addonNumVerts, sizeof(float)*4);
+	BuffTexCoords[5]=Renderer::MakeBuffer(addonTexCoords, addonNumVerts, sizeof(float)*2);
+	BuffNormals[5]=Renderer::MakeBuffer(addonNormals, addonNumVerts, sizeof(float)*4);
 
-	//Zbuduj VAO wiążący atrybuty z konkretnymi VBO
-	glGenVertexArrays(1,&vao); //Wygeneruj uchwyt na VAO i zapisz go do zmiennej globalnej
+	glGenVertexArrays(1,&BrickVAO); 
+	glBindVertexArray(BrickVAO); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[0],4); 
+	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[0],2); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[0],4); 
+	glBindVertexArray(0);
 
-	glBindVertexArray(vao); //Uaktywnij nowo utworzony VAO
+	glGenVertexArrays(1,&PadVAO); 
+	glBindVertexArray(PadVAO); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[1],4); 
+	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[1],2); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[1],4); 
+	glBindVertexArray(0);
 
-	Renderer::VBOToAttr(shaderProgram,"vertex",bufVertices,4); //"vertex" odnosi się do deklaracji "in vec4 vertex;" w vertex shaderze
-	Renderer::VBOToAttr(shaderProgram,"color",bufColors,4); //"color" odnosi się do deklaracji "in vec4 color;" w vertex shaderze
-	Renderer::VBOToAttr(shaderProgram,"normal",bufNormals,4); //"normal" odnosi się do deklaracji "in vec4 normal;" w vertex shaderze
-	Renderer::VBOToAttr(shaderProgram,"texCoords",bufTexCoords,2); //"texCoords" odnosi się do deklaracji "in vec2 texCoords;" w vertex shaderze
+	glGenVertexArrays(1,&BallVAO); 
+	glBindVertexArray(BallVAO); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[2],4); 
+	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[2],2); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[2],4); 
+	glBindVertexArray(0);
 
-	glBindVertexArray(0); //Dezaktywuj VAO
+	glGenVertexArrays(1,&SideVAO); 
+	glBindVertexArray(SideVAO); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[3],4); 
+	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[3],2); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[3],4); 
+	glBindVertexArray(0);
+
+	glGenVertexArrays(1,&CornerVAO); 
+	glBindVertexArray(CornerVAO); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[4],4); 
+	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[4],2); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[4],4); 
+	glBindVertexArray(0);
+
+	glGenVertexArrays(1,&AddonVAO); 
+	glBindVertexArray(AddonVAO); 
+	Renderer::VBOToAttr(shaderProgram,"vertex",BuffVertices[5],4); 
+	Renderer::VBOToAttr(shaderProgram,"texCoords",BuffTexCoords[5],2); 
+	Renderer::VBOToAttr(shaderProgram,"normal",BuffNormals[5],4); 
+	glBindVertexArray(0);
 }
 
 void Game::Update(GLfloat dt) {
@@ -64,21 +123,20 @@ if (this->State == GAME_ACTIVE) {
 		GLfloat velocity = PAD_SPEED * dt;
 
 		if (this->Keys[GLFW_KEY_A]) {
-			if (Player->Position.x >= 0)
-				Player->Position.x -= velocity;
+			if (Pad->Position.x >= 0)
+				Pad->Position.x -= velocity;
 		}
 		if (this->Keys[GLFW_KEY_D])
 		{
-			if (Player->Position.x <= this->Width - Player->Size.x)
-				Player->Position.x += velocity;
+			if (Pad->Position.x <= this->Width - Pad->Size.x)
+				Pad->Position.x += velocity;
 		}
 	}
 }
 
 void Game::Render() {
-	Player->Position = vec3(-1.0f, -1.0f, 5.0f);
-	Player->Size = vec3(0.5f,0.5f,0.5f);
-	Player->Rotation = vec3(45.0f,0.0f,0.0f);
+	Pad->Size = vec3(0.5f,0.5f,0.5f);
+	Pad->Rotation = vec3(45.0f,0.0f,0.0f);
 
-	Player->Draw(vao, shaderProgram);
+	Pad->Draw(PadVAO, shaderProgram, padNumVerts);
 }

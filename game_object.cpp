@@ -34,7 +34,7 @@ GLuint GameObject::ReadTexture(const char* filename) {
 }
 
 
-void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram) {
+void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount) {
 	shaderProgram->use();
 
 	mat4 P, V, M;
@@ -48,7 +48,6 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram) {
 
 	//Wylicz macierz modelu rysowanego obiektu
 	M = glm::mat4(1.0f);
-	GLuint vertexCount = Models::CubeInternal::vertexCount;
 
 	//compute P V M and vertex count
 	M = glm::scale(M, Size);
