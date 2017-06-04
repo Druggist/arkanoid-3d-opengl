@@ -1,10 +1,10 @@
 #include "game_object.h"
 
 GameObject::GameObject()
-	: Position(vec3(0.0f)), Size(vec3(1.0f)), Color(vec3(1.0f)), Velocity(vec3(0.0f)), Rotation(vec3(0.0f)), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker2.png")) {}
+	: Position(vec3(0.0f)), Size(vec3(1.0f)), Scale(vec3(1.0f)), Velocity(vec3(0.0f)), Rotation(vec3(0.0f)), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker2.png")) {}
 
-GameObject::GameObject(vec3 pos, vec3 size, glm::vec3 color, vec3 velocity, vec3 rotation, const char* filename)
-	: Position(pos), Size(size), Color(color), Velocity(velocity), Rotation(rotation), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture(filename)) {}
+GameObject::GameObject(vec3 pos, vec3 size, glm::vec3 scale, vec3 velocity, vec3 rotation, const char* filename)
+	: Position(pos), Size(size*scale), Scale(scale), Velocity(velocity), Rotation(rotation), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture(filename)) {}
 
 
 void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount) {
@@ -27,7 +27,7 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 	M = glm::mat4(1.0f);
 
 	//compute P V M and vertex count
-	M = glm::scale(M, Size);
+	M = glm::scale(M, Scale);
 	V = glm::translate(V, Position);
 	M = glm::rotate(M,Rotation.x*PI/180.0f,glm::vec3(1.0f,0.0f,0.0f));
 	M = glm::rotate(M,Rotation.y*PI/180.0f,glm::vec3(0.0f,1.0f,0.0f));

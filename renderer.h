@@ -17,6 +17,7 @@ public:
 	static GLuint MakeBuffer(void *data, int vertexCount, int vertexSize);
 	static void VBOToAttr(ShaderProgram *shaderProgram, const char* attributeName, GLuint bufVBO, int vertexSize);
 	static GLuint ReadTexture(const char* filename);
+	static vec3 MeasureObject(float * vertices, unsigned int numVertices);
 private:
 	Renderer();
 

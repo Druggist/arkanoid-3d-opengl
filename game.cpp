@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <iostream>
+
 GLuint BrickVAO, PadVAO, BallVAO, SideVAO, CornerVAO, AddonVAO, PlaneVAO;
 GLuint BuffVertices[7];
 GLuint BuffTexCoords[7];
@@ -88,7 +90,7 @@ void Game::Init() {
 	Side2->Position = vec3(-4.0f,0.0f,0.0f);
 
 	Side3 = new GameObject();
-	Side3->Size = vec3(0.8f,1.0f,1.0f);
+	Side3->Scale = vec3(0.8f,1.0f,1.0f);
 	Side3->Position = vec3(0.0f,0.0f,-5.0f);
 
 	Side4 = new GameObject();
@@ -145,29 +147,30 @@ void Game::Init() {
 	}
 
 	Life1 = new GameObject();
-	Life1->Size = vec3(1.0f,1.0f,1.0f);
+	Life1->Scale = vec3(1.0f,1.0f,1.0f);
 	Life1->Tex = Renderer::ReadTexture("assets/textures/checker.png");
 	Life1->Rotation = vec3(0.0f,90.0f,0.0f);
 	Life1->Position = vec3(-1.0f,0.0f,6.5f);
 	
 	Life2 = new GameObject();
-	Life2->Size = vec3(1.0f,1.0f,1.0f);
+	Life2->Scale = vec3(1.0f,1.0f,1.0f);
 	Life2->Tex = Renderer::ReadTexture("assets/textures/checker.png");
 	Life2->Rotation = vec3(0.0f,90.0f,0.0f);
 	Life2->Position = vec3(-2.0f,0.0f,6.5f);
 
 	Life3 = new GameObject();
-	Life3->Size = vec3(1.0f,1.0f,1.0f);
+	Life3->Scale = vec3(1.0f,1.0f,1.0f);
 	Life3->Tex = Renderer::ReadTexture("assets/textures/checker.png");
 	Life3->Rotation = vec3(0.0f,90.0f,0.0f);
 	Life3->Position = vec3(-3.0f,0.0f,6.5f);
 
 
 	Pad = new GameObject();
-	Pad->Size = vec3(1.5f,1.5f,1.5f);
+	Pad->Scale = vec3(1.5f,1.5f,1.5f);
 	Pad->Tex = Renderer::ReadTexture("assets/textures/checker.png");
 	Pad->Rotation = vec3(0.0f,90.0f,0.0f);
 	Pad->Position = vec3(0.0f,0.0f,5.5f);
+	Pad->Size = Renderer::MeasureObject(padVerts, padNumVerts) * Pad->Scale;
 
 	//scene end
 

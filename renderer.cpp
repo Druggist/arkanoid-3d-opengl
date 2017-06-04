@@ -38,3 +38,19 @@ GLuint Renderer::ReadTexture(const char* filename) {
 
 	return tex;
 }
+
+vec3 Renderer::MeasureObject(float * vertices, unsigned int numVertices) {
+	vec3 min(0.0f);
+	vec3 max(0.0f);
+	for(int i = 0; i<numVertices/3; i++){
+		if(vertices[0+i*3] < min.x) min.x = vertices[0+i*3];
+		if(vertices[1+i*3] < min.y) min.y = vertices[1+i*3];
+		if(vertices[2+i*3] < min.z) min.z = vertices[2+i*3];
+
+		if(vertices[0+i*3] > max.x) max.x = vertices[0+i*3];
+		if(vertices[1+i*3] > max.y) max.y = vertices[1+i*3];
+		if(vertices[2+i*3] > max.z) max.z = vertices[2+i*3];
+	}
+
+	return max-min;
+}
