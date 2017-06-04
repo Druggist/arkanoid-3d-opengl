@@ -249,7 +249,7 @@ void Game::Render() {
 	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts);
 
 	Side1->Draw(SideVAO, shaderProgram, sideNumVerts);
-	Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
+	//Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side3->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side4->Draw(SideVAO, shaderProgram, sideNumVerts);
 	Side5->Draw(SideVAO, shaderProgram, sideNumVerts);
@@ -276,14 +276,18 @@ void Game::Render() {
 }
 
 void Game::Collisions() {
-	if(CheckCollision(*Ball, *Side1) || CheckCollision(*Ball, *Side2) || CheckCollision(*Ball, *Side4) || CheckCollision(*Ball, *Side5)){
+	if(Ball->Position.x + Ball->Size.x / 2 >= Side1->Position.x - Side1->Size.z / 2 || Ball->Position.x - Ball->Size.x / 2 <= Side2->Position.x + Side2->Size.z / 2){
 		Ball->Velocity.x *= -1;
 	}
 
-	if(CheckCollision(*Ball, *Side3)){
+	if(Ball->Position.z - Ball->Size.z / 2 <= Side3->Position.z + Side3->Size.z / 2) {
 		Ball->Velocity.z *= -1;
 	}
 
+	if(Ball->Position.z >= 6.0f) {
+		Ball->Reset(vec3(Pad->Position.x,0.0f,5.0f), BALL_VELOCITY);
+	}
+	
 	for (auto &box : Bricks) {
 		if (!box->Destroyed) if (CheckCollision(*Ball, *box)) if (!box->Solid) box->Destroyed = GL_TRUE;
 	}
