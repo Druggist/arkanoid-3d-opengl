@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 #include <vector>
+#include <tuple>
 
 #include "constants.h"
 #include "shaderprogram.h"
@@ -18,9 +19,18 @@ using namespace std;
 
 enum GameState {
 	GAME_ACTIVE,
-    GAME_MENU,
-    GAME_WIN
+	GAME_MENU,
+	GAME_WIN
 };
+
+enum Direction {
+	UP,
+	RIGHT,
+	DOWN,
+	LEFT
+};
+
+typedef std::tuple<GLboolean, Direction, glm::vec2> Collision;
 
 class Game {
 public:
@@ -37,7 +47,8 @@ public:
 	void Collisions();
 
 private:
-	GLboolean CheckCollision(GameObject &one, GameObject &two);
+	Collision CheckCollision(BallObject &one, GameObject &two);
+	Direction VectorDirection(glm::vec2 target);
 };
 
 #endif
