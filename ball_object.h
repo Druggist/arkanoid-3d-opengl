@@ -12,6 +12,7 @@ class BallObject : public GameObject {
 public:
 	GLfloat Radius;
 	GLboolean Stuck;
+	GLuint Lives;
 
 	BallObject();
 	BallObject(vec3 pos, GLfloat radius, vec3 scale = vec3(1.0f), vec3 velocity = vec3(0.0f));

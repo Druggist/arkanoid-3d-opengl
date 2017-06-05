@@ -56,8 +56,6 @@ int main(int argc, char const *argv[]) {
 	GLfloat dt = 0.0f;
 	GLfloat lf = 0.0f;
 
-	Arkanoid.State = GAME_ACTIVE;
-
 	while(!glfwWindowShouldClose(window)) {
 		GLfloat cf = glfwGetTime();
 		dt = cf - lf;

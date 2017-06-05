@@ -65,9 +65,9 @@ void Game::Init() {
 
 	//create scene
 	Ball = new BallObject(vec3(0.0f,0.0f,5.0f), Renderer::MeasureObject(ballVerts, ballNumVerts).x / 2, vec3(1.5f), BALL_VELOCITY);
-
-
 	Ball->Tex = Renderer::ReadTexture("assets/textures/white.png");
+	Ball->Lives = LIVES;
+
 	Plane = new GameObject(vec3(0.0f,-0.5f,0.0f), Renderer::MeasureObject(planeVerts, planeNumVerts), vec3(0.0f,90.0f,0.0f));
 	Plane->Tex = Renderer::ReadTexture("assets/textures/plane.png");
 	//CORNERS
@@ -111,6 +111,7 @@ void Game::Init() {
 	Addon8->Tex = Renderer::ReadTexture("assets/textures/gray.png");
 
 	//GameObjects
+	this->BricksCount = 60;
 	for(int j = 0; j < 6; j++) {
 
 		for(int i = 0; i < 10; i++) {
@@ -217,22 +218,24 @@ void Game::Init() {
 }
 
 void Game::Update(GLfloat dt) {
-	Ball->Move(dt);
-	Collisions();
+	if (this->State == GAME_ACTIVE) {
+		Ball->Move(dt);
+		Collisions();
+	}
 }
 
 void Game::ProcessInput(GLfloat dt) {
-if (this->State == GAME_ACTIVE) {
+	if (this->State == GAME_ACTIVE) {
 		GLfloat velocity = PAD_SPEED * dt;
-
+		//int plane_size = Plane->Size.z / 2 - Pad->Size.z / 2;
 		if (this->Keys[GLFW_KEY_A] || this->Keys[GLFW_KEY_LEFT]) {
-			if (Pad->Position.x >= -3.0f){
+			if (Pad->Position.x - Pad->Size.z - 0.05f > Side2->Position.x - Side2->Size.z / 2){
 				Pad->Position.x -= velocity;
 				if(Ball->Stuck) Ball->Position.x -= velocity;
 			}
 		}
 		if (this->Keys[GLFW_KEY_D] || this->Keys[GLFW_KEY_RIGHT]) {
-			if (Pad->Position.x <= 3.0f){
+			if (Pad->Position.x + Pad->Size.z + 0.05f < Side1 ->Position.x + Side1->Size.z / 2){
 				Pad->Position.x += velocity;
 				if(Ball->Stuck) Ball->Position.x += velocity;
 			}
@@ -244,7 +247,121 @@ if (this->State == GAME_ACTIVE) {
 }
 
 void Game::Render() {
+	if(this->State == GAME_ACTIVE) this->Active();
+	else if(this->State == GAME_MENU) this->Menu();
+	else if(this->State == GAME_WIN) this->Won();
+	else if (this->State == GAME_LOOSE) this->Lost();
+}
 
+void Game::Collisions() {
+	if(Ball->Position.x + Ball->Size.x / 2 >= Side1->Position.x - Side1->Size.z / 2 || Ball->Position.x - Ball->Size.x / 2 <= Side2->Position.x + Side2->Size.z / 2){
+		Ball->Velocity.x = -Ball->Velocity.x;
+	}
+
+	if(Ball->Position.z - Ball->Size.z / 2 <= Side3->Position.z + Side3->Size.z / 2) {
+		Ball->Velocity.z = -Ball->Velocity.z;
+	}
+
+	if(Ball->Position.z >= 6.0f) {
+		Ball->Lives--;
+		if(Ball->Lives == 3) Life1->Destroyed = GL_TRUE;
+		else if(Ball->Lives == 2) Life2->Destroyed = GL_TRUE;
+		else if(Ball->Lives == 1) Life3->Destroyed = GL_TRUE;
+		else if(Ball->Lives == 0) this->State = GAME_LOOSE;
+		Ball->Reset(vec3(Pad->Position.x,0.0f,5.0f), BALL_VELOCITY);
+	}
+	
+	for (auto &box : Bricks) {
+		if (!box->Destroyed) {
+			Collision collision = CheckCollision(*Ball, *box);
+			if (std::get<0>(collision)) { 
+				if (!box->Solid) {
+					box->Destroyed = GL_TRUE;
+					this->BricksCount--;
+					if(this->BricksCount == 0) this->State = GAME_WIN;
+				}
+				Direction dir = std::get<1>(collision);
+				vec2 diff_vector = std::get<2>(collision);
+				
+				if (dir == LEFT || dir == RIGHT) {
+					Ball->Velocity.x = -Ball->Velocity.x;
+					GLfloat penetration = Ball->Radius - std::abs(diff_vector.x);
+					if (dir == LEFT) Ball->Position.x += penetration;
+					else Ball->Position.x -= penetration;
+				} else {
+					Ball->Velocity.z = -Ball->Velocity.z;
+					GLfloat penetration = Ball->Radius - std::abs(diff_vector.y);
+					if (dir == UP) Ball->Position.z -= penetration;
+					else Ball->Position.z += penetration;
+				}
+			}	
+		}
+	}
+
+	Collision collision = CheckCollision(*Ball, *Pad);
+	if (std::get<0>(collision)) { 
+		Direction dir = std::get<1>(collision);
+		vec2 diff_vector = std::get<2>(collision);
+			
+		if (dir == LEFT || dir == RIGHT) {
+			Ball->Velocity.x = -Ball->Velocity.x;
+			Ball->Velocity.z = -Ball->Velocity.z;
+			GLfloat penetration = Ball->Radius - std::abs(diff_vector.x);
+			if (dir == LEFT) Ball->Position.x += penetration;
+			else Ball->Position.x -= penetration;
+		} else {
+			Ball->Velocity.z = -Ball->Velocity.z;
+			GLfloat penetration = Ball->Radius - std::abs(diff_vector.y);
+			if (dir == UP) Ball->Position.z -= penetration;
+			else Ball->Position.z += penetration;
+		}
+	}
+
+}
+
+Collision Game::CheckCollision(BallObject &one, GameObject &two) {
+	// Get center point circle first 
+	vec2 center(one.Position.x, one.Position.z);
+	// Calculate AABB info (center, half-extents)
+	vec2 aabb_half_extents(two.Size.x / 2, two.Size.z / 2);
+	if(two.Rotation.y != 0.0f) aabb_half_extents = vec2(two.Size.z / 2, two.Size.x / 2);
+	vec2 aabb_center(two.Position.x, two.Position.z);
+	// Get difference vector between both centers
+	vec2 difference = center - aabb_center;
+	vec2 clamped = clamp(difference, -aabb_half_extents, aabb_half_extents);
+	// Now that we know the the clamped values, add this to AABB_center and we get the value of box closest to circle
+	vec2 closest = aabb_center + clamped;
+	// Now retrieve vector between center circle and closest point AABB and check if length < radius
+	difference = closest - center;
+	
+	if(length(difference) < one.Radius)
+		return std::make_tuple(GL_TRUE, VectorDirection(difference), difference);
+	else
+		return std::make_tuple(GL_FALSE, UP, vec2(0, 0));
+}  
+
+Direction Game::VectorDirection(vec2 target) {
+	glm::vec2 compass[] = {
+		vec2(0.0f, 1.0f),	// up
+		vec2(1.0f, 0.0f),	// right
+		vec2(0.0f, -1.0f),	// down
+		vec2(-1.0f, 0.0f)	// left
+	};
+
+	GLfloat max = 0.0f;
+	GLuint best_match = -1;
+
+	for (GLuint i = 0; i < 4; i++) {
+		GLfloat dot_product = dot(normalize(target), compass[i]);
+		if (dot_product > max) {
+			max = dot_product;
+			best_match = i;
+		}
+	}
+	return (Direction)best_match;
+}   
+
+void Game::Active(){
 	Plane->Draw(PlaneVAO, shaderProgram, planeNumVerts);
 
 	Corner1->Draw(CornerVAO, shaderProgram, cornerNumVerts);
@@ -277,81 +394,14 @@ void Game::Render() {
 	Ball->Draw(BallVAO, shaderProgram, ballNumVerts);
 }
 
-void Game::Collisions() {
-	if(Ball->Position.x + Ball->Size.x / 2 >= Side1->Position.x - Side1->Size.z / 2 || Ball->Position.x - Ball->Size.x / 2 <= Side2->Position.x + Side2->Size.z / 2){
-		Ball->Velocity.x = -Ball->Velocity.x;
-	}
+void Game::Menu(){
 
-	if(Ball->Position.z - Ball->Size.z / 2 <= Side3->Position.z + Side3->Size.z / 2) {
-		Ball->Velocity.z = -Ball->Velocity.z;
-	}
-
-	if(Ball->Position.z >= 6.0f) {
-		Ball->Reset(vec3(Pad->Position.x,0.0f,5.0f), BALL_VELOCITY);
-	}
-	
-	for (auto &box : Bricks) {
-		if (!box->Destroyed) {
-			Collision collision = CheckCollision(*Ball, *box);
-			if (std::get<0>(collision)) { 
-				if (!box->Solid) box->Destroyed = GL_TRUE;
-				Direction dir = std::get<1>(collision);
-                vec2 diff_vector = std::get<2>(collision);
-                
-                if (dir == LEFT || dir == RIGHT) {
-                    Ball->Velocity.x = -Ball->Velocity.x;
-                    GLfloat penetration = Ball->Radius - std::abs(diff_vector.x);
-                    if (dir == LEFT) Ball->Position.x += penetration;
-                    else Ball->Position.x -= penetration;
-                } else {
-                    Ball->Velocity.z = -Ball->Velocity.z;
-                    GLfloat penetration = Ball->Radius - std::abs(diff_vector.y);
-                    if (dir == UP) Ball->Position.z -= penetration;
-                    else Ball->Position.z += penetration;
-                }
-			}	
-		}
-	}
 }
 
-Collision Game::CheckCollision(BallObject &one, GameObject &two) {
-	// Get center point circle first 
-	vec2 center(one.Position.x, one.Position.z);
-	// Calculate AABB info (center, half-extents)
-	vec2 aabb_half_extents(two.Size.x / 2, two.Size.z / 2);
-	vec2 aabb_center(two.Position.x, two.Position.z);
-	// Get difference vector between both centers
-	vec2 difference = center - aabb_center;
-	vec2 clamped = clamp(difference, -aabb_half_extents, aabb_half_extents);
-	// Now that we know the the clamped values, add this to AABB_center and we get the value of box closest to circle
-	vec2 closest = aabb_center + clamped;
-	// Now retrieve vector between center circle and closest point AABB and check if length < radius
-	difference = closest - center;
+void Game::Won(){
 	
-	if(length(difference) < one.Radius)
-		return std::make_tuple(GL_TRUE, VectorDirection(difference), difference);
-	else
-		return std::make_tuple(GL_FALSE, UP, vec2(0, 0));
-}  
+}
 
-Direction Game::VectorDirection(vec2 target)
-{
-	glm::vec2 compass[] = {
-		vec2(0.0f, 1.0f),	// up
-		vec2(1.0f, 0.0f),	// right
-		vec2(0.0f, -1.0f),	// down
-		vec2(-1.0f, 0.0f)	// left
-	};
-
-	GLfloat max = 0.0f;
-	GLuint best_match = -1;
-
-	for (GLuint i = 0; i < 4; i++) {
-		GLfloat dot_product = dot(normalize(target), compass[i]);
-		if (dot_product > max) {
-			max = dot_product;
-			best_match = i;
-		}
-	}
-	return (Direction)best_match;
-}   
+void Game::Lost(){
+	
+}

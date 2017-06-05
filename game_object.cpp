@@ -12,12 +12,12 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 
 	mat4 P, V, M;
 	P = perspective(45 * PI / 180, (float)SCREEN_WIDTH/SCREEN_HEIGHT, 1.0f, 50.0f); //Wylicz macierz rzutowania
-	//Upper View
+/*	//Upper View
 	V = lookAt( //Wylicz macierz widoku
 		vec3(0.0f, 20.0f, 3.1f),
 		vec3(0.0f, 0.0f, 3.0f),
 		vec3(0.0f, 1.0f, 0.0f));
-
+*/
 	V = lookAt( //Wylicz macierz widoku
 		vec3(4.0f, 5.0f, 9.0f),
 		vec3(-1.0f, -3.0f, 0.0f),

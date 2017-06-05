@@ -20,7 +20,8 @@ using namespace std;
 enum GameState {
 	GAME_ACTIVE,
 	GAME_MENU,
-	GAME_WIN
+	GAME_WIN,
+	GAME_LOOSE
 };
 
 enum Direction {
@@ -36,10 +37,15 @@ class Game {
 public:
 	GameState State;
 	GLboolean Keys[1024];
+	GLuint BricksCount;
 
 	Game();
 	~Game();
 	void Init();
+	void Menu();
+	void Active();
+	void Won();
+	void Lost();
 	GLuint ReadTexture(const char* filename);
 	void ProcessInput(GLfloat dt);
 	void Update(GLfloat dt);
