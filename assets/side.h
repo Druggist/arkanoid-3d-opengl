@@ -7,12 +7,14 @@
 // Positions: 64
 // Texels: 128
 // Normals: 36
+// VertexNormals: 36
 // Faces: 124
 // Vertices: 372
 
 extern unsigned int sideNumVerts;
-extern float sideVerts[1116];
-extern float sideTexCoords[744];
-extern float sideNormals[1116];
+extern float sideVerts[];
+extern float sideTexCoords[];
+extern float sideNormals[];
+extern float sideVertexNormals[];
 
 #endif

@@ -11,8 +11,8 @@
 // Vertices: 6
 
 extern unsigned int planeNumVerts;
-extern float planeVerts[];
-extern float planeTexCoords[];
-extern float planeNormals[];
+extern float planeVerts[18];
+extern float planeTexCoords[12];
+extern float planeNormals[18];
 
 #endif

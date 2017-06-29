@@ -147,13 +147,13 @@ void Game::Init() {
 
 	BuffVertices[0]=Renderer::MakeBuffer(brickVerts, brickNumVerts, sizeof(float)*3);
 	BuffTexCoords[0]=Renderer::MakeBuffer(brickTexCoords, brickNumVerts, sizeof(float)*2);
-	BuffNormals[0]=Renderer::MakeBuffer(brickNormals, brickNumVerts, sizeof(float)*3);
+	BuffNormals[0]=Renderer::MakeBuffer(brickVertexNormals, brickNumVerts, sizeof(float)*3);
 	BuffVertices[1]=Renderer::MakeBuffer((void*) padVerts, padNumVerts, sizeof(float)*3);
 	BuffTexCoords[1]=Renderer::MakeBuffer((void*) padTexCoords, padNumVerts, sizeof(float)*2);
 	BuffNormals[1]=Renderer::MakeBuffer((void*) padNormals, padNumVerts, sizeof(float)*3);
 	BuffVertices[2]=Renderer::MakeBuffer(ballVerts, ballNumVerts, sizeof(float)*3);
 	BuffTexCoords[2]=Renderer::MakeBuffer(ballTexCoords, ballNumVerts, sizeof(float)*2);
-	BuffNormals[2]=Renderer::MakeBuffer(ballNormals, ballNumVerts, sizeof(float)*3);
+	BuffNormals[2]=Renderer::MakeBuffer(ballVertexNormals, ballNumVerts, sizeof(float)*3);
 	BuffVertices[3]=Renderer::MakeBuffer(sideVerts, sideNumVerts, sizeof(float)*3);
 	BuffTexCoords[3]=Renderer::MakeBuffer(sideTexCoords, sideNumVerts, sizeof(float)*2);
 	BuffNormals[3]=Renderer::MakeBuffer(sideNormals, sideNumVerts, sizeof(float)*3);

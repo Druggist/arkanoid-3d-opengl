@@ -1,4 +1,5 @@
 #include "game_object.h"
+#include <iostream>
 
 GameObject::GameObject()
 	: Position(vec3(0.0f)), Size(vec3(1.0f)), Scale(vec3(1.0f)), Velocity(vec3(0.0f)), Rotation(vec3(0.0f)), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker.png")) {}
@@ -13,15 +14,15 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 	mat4 P, V, M;
 	P = perspective(45 * PI / 180, (float)SCREEN_WIDTH/SCREEN_HEIGHT, 1.0f, 50.0f); //Wylicz macierz rzutowania
 	//Upper View
-	V = lookAt( //Wylicz macierz widoku
+/*	V = lookAt( //Wylicz macierz widoku
 		vec3(0.0f, 20.0f, 3.1f),
 		vec3(0.0f, 0.0f, 3.0f),
 		vec3(0.0f, 1.0f, 0.0f));
-
-/*V = lookAt( //Wylicz macierz widoku
+*/
+ V = lookAt( //Wylicz macierz widoku
 		vec3(4.0f, 5.0f, 9.0f),
 		vec3(-1.0f, -3.0f, 0.0f),
-		vec3(0.0f, 1.0f, 0.0f));*/
+		vec3(0.0f, 1.0f, 0.0f)); 
 
 	//Wylicz macierz modelu rysowanego obiektu
 	M = mat4(1.0f);
@@ -37,11 +38,12 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"), 1, false, value_ptr(V));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"), 1, false, value_ptr(M));
     glUniform4f(shaderProgram->getUniformLocation("lp1"), 5, 1, 1, 1); 
-    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos2.x, 1, lightPos2.z, 1); 
+    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos2.x/2, 1, lightPos2.z/2, 1); 
 	glUniform1i(shaderProgram->getUniformLocation("textureMap0"),0);
-
+  
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,Tex);
+	//std::cout << lightPos2.x << " : " << lightPos2.z << std::endl;
 
 
 	glBindVertexArray(vao);
