@@ -42,5 +42,5 @@ void main(void) {
 	float rv2=pow(max(dot(_r2,_v),0),shininess);
 
 	//Obliczenie modelu oswietlenia
-	pixelColor= 1.5*(ka*la+kd*ld*vec4(nl1,nl1,nl1,1)+ 3*ks*ls*vec4(rv1,rv1,rv1,0) + ka*la+kd*ld*vec4(nl2,nl2,nl2,1)+ 3*ks*ls*vec4(rv2,rv2,rv2,0))/2;
+	pixelColor= 2*(ka*la+kd*ld*vec4(nl1,nl1,nl1,1)+ 1.5*ks*ls*vec4(rv1,rv1,rv1,0) + 1,5*ka*la+kd*ld*vec4(nl2,nl2,nl2,1)+ 3*ks*ls*vec4(rv2,rv2,rv2,0)/1.5);
 }
