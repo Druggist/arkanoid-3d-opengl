@@ -38,7 +38,7 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"), 1, false, value_ptr(V));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"), 1, false, value_ptr(M));
     glUniform4f(shaderProgram->getUniformLocation("lp1"), 5, 1, 1, 1); 
-    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos2.x/2, 1, lightPos2.z/2, 1); 
+    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos2.x/2, 1, lightPos2.z/2+2, 1); 
 	glUniform1i(shaderProgram->getUniformLocation("textureMap0"),0);
   
 	glActiveTexture(GL_TEXTURE0);
