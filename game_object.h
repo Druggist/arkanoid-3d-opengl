@@ -22,7 +22,7 @@ public:
 	GameObject();
 	GameObject(vec3 pos, vec3 size, vec3 rot = vec3(0.0f), vec3 scale = vec3(1.0f), vec3 velocity = vec3(0.0f)); 
 	
-	virtual void Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount);
+	virtual void Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount, vec3 lightPos1, vec3 lightPos2);
 };
 
 #endif

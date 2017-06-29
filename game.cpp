@@ -362,36 +362,36 @@ Direction Game::VectorDirection(vec2 target) {
 }   
 
 void Game::Active(){
-	Plane->Draw(PlaneVAO, shaderProgram, planeNumVerts);
+	Plane->Draw(PlaneVAO, shaderProgram, planeNumVerts, Pad->Position, Ball->Position);
 
-	Corner1->Draw(CornerVAO, shaderProgram, cornerNumVerts);
-	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts);
+	Corner1->Draw(CornerVAO, shaderProgram, cornerNumVerts, Pad->Position, Ball->Position);
+	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts, Pad->Position, Ball->Position);
 
-	Side1->Draw(SideVAO, shaderProgram, sideNumVerts);
-	Side2->Draw(SideVAO, shaderProgram, sideNumVerts);
-	Side3->Draw(SideVAO, shaderProgram, sideNumVerts);
-	Side4->Draw(SideVAO, shaderProgram, sideNumVerts);
-	Side5->Draw(SideVAO, shaderProgram, sideNumVerts);
+	Side1->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
+	Side2->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
+	Side3->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
+	Side4->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
+	Side5->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
 
-	Addon1->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon2->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon3->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon4->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon5->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon6->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon7->Draw(AddonVAO, shaderProgram, addonNumVerts);
-	Addon8->Draw(AddonVAO, shaderProgram, addonNumVerts);
+	Addon1->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon2->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon3->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon4->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon5->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon6->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon7->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon8->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
 
 	for(int i = 0; i < Bricks.size(); i++ ){
-		if(Bricks[i]->Destroyed == false) Bricks[i]->Draw(BrickVAO, shaderProgram, brickNumVerts);
+		if(Bricks[i]->Destroyed == false) Bricks[i]->Draw(BrickVAO, shaderProgram, brickNumVerts, Pad->Position, Ball->Position);
 	}
 
-	if(!Life1->Destroyed) Life1->Draw(PadVAO, shaderProgram, padNumVerts);
-	if(!Life2->Destroyed) Life2->Draw(PadVAO, shaderProgram, padNumVerts);
-	if(!Life3->Destroyed) Life3->Draw(PadVAO, shaderProgram, padNumVerts);
+	if(!Life1->Destroyed) Life1->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
+	if(!Life2->Destroyed) Life2->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
+	if(!Life3->Destroyed) Life3->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
 
-	Pad->Draw(PadVAO, shaderProgram, padNumVerts);
-	Ball->Draw(BallVAO, shaderProgram, ballNumVerts);
+	Pad->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
+	Ball->Draw(BallVAO, shaderProgram, ballNumVerts, Pad->Position, Ball->Position);
 }
 
 void Game::Menu(){

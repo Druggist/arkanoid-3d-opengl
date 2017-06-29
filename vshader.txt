@@ -4,7 +4,8 @@
 uniform mat4 P; //Macierz rzutowania
 uniform mat4 V; //Macierz widoku
 uniform mat4 M; //Macierz modelu
-uniform vec4 lp; //polozenie zrodla swiatla, wyrazone w przestrzeni swiata
+uniform vec4 lp1; //polozenie zrodla swiatla, wyrazone w przestrzeni swiata
+uniform vec4 lp2; //polozenie zrodla swiatla, wyrazone w przestrzeni swiata
 
 //Atrybuty
 in vec3 vertex; //wspolrzedne wierzcholka, wyrazone w przestrzeni modelu
@@ -13,7 +14,8 @@ in vec2 texCoords; //wspolrzednie teksturowania
 
 //Zmienne interpolowane
 out vec4 n; //Wektor normalny w przestrzeni oka
-out vec4 l; //Wektor do swiatla w przestrzeni oka
+out vec4 l1; //Wektor do swiatla w przestrzeni oka
+out vec4 l2; //Wektor do swiatla w przestrzeni oka
 out vec4 v; //Wektor do obserwatora w przestrzeni oka
 out vec2 iTexCoords; //Interpolowane wspolrzedne teksturowania
 
@@ -21,12 +23,18 @@ out vec2 iTexCoords; //Interpolowane wspolrzedne teksturowania
 void main(void) {
     vec4 v1 = vec4(vertex,1.0f);
     vec4 n1 = vec4(normal,0.0f);
+    
     //Obliczenie wektora do swiatla w przestrzeni oka
-    l=normalize(V*(lp-M*v1));
+    l1=normalize(V*(lp1-M*v1));
+    l2=normalize(V*(lp2-M*v1));
+
     //Obliczenie wektora normalnego w przestrzeni oka
     n=normalize(V*M*n1);
+
     //Obliczenie wektora do obserwatora w przestrzeni oka
     v=normalize(vec4(0,0,0,1)-V*M*v1);
+    
+    //Interpolowanie współrzędnych teksturowania
     iTexCoords=texCoords;
 
     //Obliczenie wspolrzednej wierzcholka w przestrzeni przyciecia

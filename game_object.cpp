@@ -7,21 +7,21 @@ GameObject::GameObject(vec3 pos, vec3 size, vec3 rot, vec3 scale, vec3 velocity)
 	: Position(pos), Size(size*scale), Scale(scale), Velocity(velocity), Rotation(rot), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker.png")) {}
 
 
-void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount) {
+void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount, vec3 lightPos1, vec3 lightPos2) {
 	shaderProgram->use();
 
 	mat4 P, V, M;
 	P = perspective(45 * PI / 180, (float)SCREEN_WIDTH/SCREEN_HEIGHT, 1.0f, 50.0f); //Wylicz macierz rzutowania
-/*	//Upper View
+	//Upper View
 	V = lookAt( //Wylicz macierz widoku
 		vec3(0.0f, 20.0f, 3.1f),
 		vec3(0.0f, 0.0f, 3.0f),
 		vec3(0.0f, 1.0f, 0.0f));
-*/
-	V = lookAt( //Wylicz macierz widoku
+
+/*V = lookAt( //Wylicz macierz widoku
 		vec3(4.0f, 5.0f, 9.0f),
 		vec3(-1.0f, -3.0f, 0.0f),
-		vec3(0.0f, 1.0f, 0.0f));
+		vec3(0.0f, 1.0f, 0.0f));*/
 
 	//Wylicz macierz modelu rysowanego obiektu
 	M = mat4(1.0f);
@@ -36,8 +36,8 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("P"), 1, false, value_ptr(P));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"), 1, false, value_ptr(V));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"), 1, false, value_ptr(M));
-    glUniform4f(shaderProgram->getUniformLocation("lp"), 0, 5, 1, 1); 
-
+    glUniform4f(shaderProgram->getUniformLocation("lp1"), 5, 1, 1, 1); 
+    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos2.x, 1, lightPos2.z, 1); 
 	glUniform1i(shaderProgram->getUniformLocation("textureMap0"),0);
 
 	glActiveTexture(GL_TEXTURE0);
