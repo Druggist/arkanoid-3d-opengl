@@ -13,6 +13,7 @@ GameObject *Life1, *Life2, *Life3;
 vector<GameObject*> Bricks;
 BallObject *Ball;
 ShaderProgram *shaderProgram;
+vec3 LightPos, LightBounds, Velocity;
 
 Game::Game() { 
 
@@ -60,6 +61,10 @@ Game::~Game() {
 void Game::Init() {
 	glClearColor(0, 0, 0, 1);
 	glEnable(GL_DEPTH_TEST);
+
+	LightPos = vec3(0.0f, 2.0f, 0.0f);
+	LightBounds = vec3(6.0f, 0.0f, 8.0f);
+	Velocity = vec3(1.0f, 0.0f, 2.0f);
 
 	shaderProgram = new ShaderProgram("vshader.txt",NULL,"fshader.txt");
 
@@ -220,6 +225,17 @@ void Game::Init() {
 void Game::Update(GLfloat dt) {
 	if (this->State == GAME_ACTIVE) {
 		Ball->Move(dt);
+
+		vec3 tmp = LightPos;
+		LightPos += Velocity * dt;
+		if(LightPos.x > LightBounds.x || LightPos.x < -LightBounds.x) {
+			Velocity.x = -Velocity.x;
+			LightPos = tmp;
+		}
+		if(LightPos.z > LightBounds.z || LightPos.z < -LightBounds.z) {
+			Velocity.z = -Velocity.z;
+			LightPos = tmp;
+		}
 		Collisions();
 	}
 }
@@ -362,36 +378,36 @@ Direction Game::VectorDirection(vec2 target) {
 }   
 
 void Game::Active(){
-	Plane->Draw(PlaneVAO, shaderProgram, planeNumVerts, Pad->Position, Ball->Position);
+	Plane->Draw(PlaneVAO, shaderProgram, planeNumVerts, LightPos);
 
-	Corner1->Draw(CornerVAO, shaderProgram, cornerNumVerts, Pad->Position, Ball->Position);
-	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts, Pad->Position, Ball->Position);
+	Corner1->Draw(CornerVAO, shaderProgram, cornerNumVerts, LightPos);
+	Corner2->Draw(CornerVAO, shaderProgram, cornerNumVerts, LightPos);
 
-	Side1->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
-	Side2->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
-	Side3->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
-	Side4->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
-	Side5->Draw(SideVAO, shaderProgram, sideNumVerts, Pad->Position, Ball->Position);
+	Side1->Draw(SideVAO, shaderProgram, sideNumVerts, LightPos);
+	Side2->Draw(SideVAO, shaderProgram, sideNumVerts, LightPos);
+	Side3->Draw(SideVAO, shaderProgram, sideNumVerts, LightPos);
+	Side4->Draw(SideVAO, shaderProgram, sideNumVerts, LightPos);
+	Side5->Draw(SideVAO, shaderProgram, sideNumVerts, LightPos);
 
-	Addon1->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon2->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon3->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon4->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon5->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon6->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon7->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
-	Addon8->Draw(AddonVAO, shaderProgram, addonNumVerts, Pad->Position, Ball->Position);
+	Addon1->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon2->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon3->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon4->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon5->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon6->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon7->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
+	Addon8->Draw(AddonVAO, shaderProgram, addonNumVerts, LightPos);
 
 	for(int i = 0; i < Bricks.size(); i++ ){
-		if(Bricks[i]->Destroyed == false) Bricks[i]->Draw(BrickVAO, shaderProgram, brickNumVerts, Pad->Position, Ball->Position);
+		if(Bricks[i]->Destroyed == false) Bricks[i]->Draw(BrickVAO, shaderProgram, brickNumVerts, LightPos);
 	}
 
-	if(!Life1->Destroyed) Life1->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
-	if(!Life2->Destroyed) Life2->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
-	if(!Life3->Destroyed) Life3->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
+	if(!Life1->Destroyed) Life1->Draw(PadVAO, shaderProgram, padNumVerts, LightPos);
+	if(!Life2->Destroyed) Life2->Draw(PadVAO, shaderProgram, padNumVerts, LightPos);
+	if(!Life3->Destroyed) Life3->Draw(PadVAO, shaderProgram, padNumVerts, LightPos);
 
-	Pad->Draw(PadVAO, shaderProgram, padNumVerts, Pad->Position, Ball->Position);
-	Ball->Draw(BallVAO, shaderProgram, ballNumVerts, Pad->Position, Ball->Position);
+	Pad->Draw(PadVAO, shaderProgram, padNumVerts, LightPos);
+	Ball->Draw(BallVAO, shaderProgram, ballNumVerts, LightPos);
 }
 
 void Game::Menu(){

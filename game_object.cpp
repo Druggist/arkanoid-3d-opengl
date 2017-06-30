@@ -8,7 +8,7 @@ GameObject::GameObject(vec3 pos, vec3 size, vec3 rot, vec3 scale, vec3 velocity)
 	: Position(pos), Size(size*scale), Scale(scale), Velocity(velocity), Rotation(rot), Solid(false), Destroyed(false), Tex(Renderer::ReadTexture("assets/textures/checker.png")) {}
 
 
-void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount, vec3 lightPos1, vec3 lightPos2) {
+void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCount, vec3 lightPos) {
 	shaderProgram->use();
 
 	mat4 P, V, M;
@@ -38,7 +38,7 @@ void GameObject::Draw(GLuint &vao, ShaderProgram *shaderProgram, GLuint vertexCo
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"), 1, false, value_ptr(V));
 	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"), 1, false, value_ptr(M));
     glUniform4f(shaderProgram->getUniformLocation("lp1"), 5, 1, 1, 1); 
-    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos2.x/2, 1, lightPos2.z/2+2, 1); 
+    glUniform4f(shaderProgram->getUniformLocation("lp2"), lightPos.x, lightPos.y, lightPos.z, 1); 
 	glUniform1i(shaderProgram->getUniformLocation("textureMap0"),0);
   
 	glActiveTexture(GL_TEXTURE0);
